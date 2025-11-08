@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitcoin Click Game</title>
+<link rel="shortcut icon" href="/mining.png" type="image/x-icon">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: background 0.5s, color 0.5s;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  transition: background 0.5s, color 0.5s;
+}
+
+h1 {
+  text-align: center;
+  color: #f7931a;
+  margin-bottom: 10px;
+  font-size: 2.5em;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, color 0.3s;
+}
+
+.theme-toggle:hover {
+  background: #f7931a;
+  color: white;
+}
+
+.stats {
+  background: linear-gradient(135deg, #f7931a 0%, #ff6b00 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.bitcoin-count {
+  font-size: 3em;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.per-second {
+  font-size: 1.2em;
+  opacity: 0.9;
+}
+
+.bitcoin-btn {
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(145deg, #f7931a, #ff9a00);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: block;
+  margin: 30px auto;
+  font-size: 5em;
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 10px 30px rgba(247, 147, 26, 0.4);
+}
+
+.bitcoin-btn:hover {
+  transform: scale(1.05);
+}
+
+.bitcoin-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 5px 15px rgba(247, 147, 26, 0.4);
+}
+
+.upgrades {
+  margin-top: 30px;
+}
+
+.upgrades h2 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.upgrade-item {
+  background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.upgrade-item:hover {
+  transform: translateX(5px);
+}
+
+.upgrade-info {
+  flex: 1;
+}
+
+.upgrade-name {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.upgrade-description {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.upgrade-count {
+  color: #f7931a;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.upgrade-btn {
+  background: linear-gradient(135deg, #f7931a 0%, #ff6b00 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.upgrade-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(247, 147, 26, 0.4);
+}
+
+.upgrade-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.float-animation {
+  animation: float 0.5s ease-out;
+  position: fixed;
+  pointer-events: none;
+  font-weight: bold;
+  color: #f7931a;
+  font-size: 1.5em;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes float {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-100px); }
+}
+
+/* 🌙 TUN REJIM */
+body.dark {
+  background: #020024;
+  background: linear-gradient(159deg, rgba(2, 0, 36, 1) 0%, rgba(0, 0, 87, 1) 49%, rgba(0, 153, 184, 1) 100%);
+  color: #fff;
+}
+
+body.dark .container {
+  background: rgba(30, 30, 30, 0.95);
+  color: white;
+}
+
+body.dark .upgrade-item {
+  background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+}
+
+body.dark .upgrade-name {
+  color: #fff;
+}
+
+body.dark .upgrade-description {
+  color: #aaa;
+}
+
+body.dark .theme-toggle {
+  background: #333;
+  color: #fff;
+}
+
+body.dark .theme-toggle:hover {
+  background: #f7931a;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+  <button class="theme-toggle" id="themeToggle">🌙 Tun rejimi</button>
+
+  <div class="container">
+    <h1><img src="/bitcoin.png" width="50px" height="50px" alt=""> Bitcoin Clicker</h1>
+    
+    <div class="stats">
+      <div>Jami Bitcoin</div>
+      <div class="bitcoin-count" id="bitcoinCount">0.00</div>
+      <div class="per-second">Soniyada: <span id="perSecond">0.00</span> BTC</div>
+    </div>
+
+    <button class="bitcoin-btn" id="bitcoinBtn"><img src="bitcoin(1).png" width="100px" height="100px" alt=""></button>
+
+    <div class="upgrades">
+      <h2>⚙️ Yangilanishlar</h2>
+
+      <div class="upgrade-item">
+        <div class="upgrade-info">
+          <div class="upgrade-name">💻 GPU Miner</div>
+          <div class="upgrade-description">+0.1 BTC/soniya</div>
+        </div>
+        <div>
+          <span class="upgrade-count" id="gpuCount">0</span>
+          <button class="upgrade-btn" id="gpuBtn" data-cost="10">10 BTC</button>
+        </div>
+      </div>
+
+      <div class="upgrade-item">
+        <div class="upgrade-info">
+          <div class="upgrade-name">🏗 Mining Farm</div>
+          <div class="upgrade-description">+0.5 BTC/soniya</div>
+        </div>
+        <div>
+          <span class="upgrade-count" id="farmCount">0</span>
+          <button class="upgrade-btn" id="farmBtn" data-cost="50">50 BTC</button>
+        </div>
+      </div>
+
+      <div class="upgrade-item">
+        <div class="upgrade-info">
+          <div class="upgrade-name">🛰 ASIC Miner</div>
+          <div class="upgrade-description">+2 BTC/soniya</div>
+        </div>
+        <div>
+          <span class="upgrade-count" id="asicCount">0</span>
+          <button class="upgrade-btn" id="asicBtn" data-cost="200">200 BTC</button>
+        </div>
+      </div>
+
+      <div class="upgrade-item">
+        <div class="upgrade-info">
+          <div class="upgrade-name">🏙 Data Center</div>
+          <div class="upgrade-description">+10 BTC/soniya</div>
+        </div>
+        <div>
+          <span class="upgrade-count" id="centerCount">0</span>
+          <button class="upgrade-btn" id="centerBtn" data-cost="1000">1000 BTC</button>
+        </div>
+      </div>
+
+      <div class="upgrade-item">
+        <div class="upgrade-info">
+          <div class="upgrade-name">🌐 Blockchain Network</div>
+          <div class="upgrade-description">+50 BTC/soniya</div>
+        </div>
+        <div>
+          <span class="upgrade-count" id="networkCount">0</span>
+          <button class="upgrade-btn" id="networkBtn" data-cost="5000">5000 BTC</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+let bitcoin = 0;
+let clickPower = 1;
+let perSecond = 0;
+
+const upgrades = {
+  gpu: { count: 0, cost: 10, income: 0.1, multiplier: 1.15 },
+  farm: { count: 0, cost: 50, income: 0.5, multiplier: 1.15 },
+  asic: { count: 0, cost: 200, income: 2, multiplier: 1.15 },
+  center: { count: 0, cost: 1000, income: 10, multiplier: 1.15 },
+  network: { count: 0, cost: 5000, income: 50, multiplier: 1.15 }
+};
+
+const bitcoinBtn = document.getElementById('bitcoinBtn');
+const bitcoinCount = document.getElementById('bitcoinCount');
+const perSecondDisplay = document.getElementById('perSecond');
+const themeToggle = document.getElementById('themeToggle');
+
+bitcoinBtn.addEventListener('click', (e) => {
+  bitcoin += clickPower;
+  updateDisplay();
+  createFloatingText('+' + clickPower, e.clientX, e.clientY);
+});
+
+function createFloatingText(text, x, y) {
+  const el = document.createElement('div');
+  el.className = 'float-animation';
+  el.textContent = text;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 500);
+}
+
+function buyUpgrade(type, btnId, countId) {
+  const btn = document.getElementById(btnId);
+  btn.addEventListener('click', () => {
+    const upgrade = upgrades[type];
+    if (bitcoin >= upgrade.cost) {
+      bitcoin -= upgrade.cost;
+      upgrade.count++;
+      upgrade.cost = Math.ceil(upgrade.cost * upgrade.multiplier);
+      updateDisplay();
+      updateUpgradeButtons();
+    }
+  });
+}
+
+buyUpgrade('gpu', 'gpuBtn', 'gpuCount');
+buyUpgrade('farm', 'farmBtn', 'farmCount');
+buyUpgrade('asic', 'asicBtn', 'asicCount');
+buyUpgrade('center', 'centerBtn', 'centerCount');
+buyUpgrade('network', 'networkBtn', 'networkCount');
+
+function calculatePerSecond() {
+  perSecond = 0;
+  for (let key in upgrades) {
+    perSecond += upgrades[key].count * upgrades[key].income;
+  }
+}
+
+function updateDisplay() {
+  bitcoinCount.textContent = bitcoin.toFixed(2);
+  calculatePerSecond();
+  perSecondDisplay.textContent = perSecond.toFixed(2);
+  
+  document.getElementById('gpuCount').textContent = upgrades.gpu.count;
+  document.getElementById('farmCount').textContent = upgrades.farm.count;
+  document.getElementById('asicCount').textContent = upgrades.asic.count;
+  document.getElementById('centerCount').textContent = upgrades.center.count;
+  document.getElementById('networkCount').textContent = upgrades.network.count;
+}
+
+function updateUpgradeButtons() {
+  for (let key in upgrades) {
+    const btn = document.getElementById(key + 'Btn');
+    btn.textContent = upgrades[key].cost + ' BTC';
+    btn.disabled = bitcoin < upgrades[key].cost;
+  }
+}
+
+setInterval(() => {
+  bitcoin += perSecond / 10;
+  updateDisplay();
+  updateUpgradeButtons();
+}, 100);
+
+updateDisplay();
+updateUpgradeButtons();
+
+
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  if (document.body.classList.contains('dark')) {
+    themeToggle.textContent = '☀️ Kun rejimi';
+  } else {
+    themeToggle.textContent = '🌙 Tun rejimi';
+  }
+});
+</script>
+</body>
+</html>
